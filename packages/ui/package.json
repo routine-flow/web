@@ -1,0 +1,49 @@
+{
+  "name": "@routine-flow/ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint \"src/**/*.ts*\""
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "^15.0.0"
+  },
+  "devDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "next": "*",
+    "typescript": "*",
+    "@types/node": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "@radix-ui/react-slot": "*",
+    "class-variance-authority": "*",
+    "clsx": "*",
+    "lucide-react": "*",
+    "tailwindcss": "*",
+    "tailwind-merge": "*",
+    "tailwindcss-animate": "*",
+    "eslint": "*",
+    "eslint-config-next": "*",
+    "@eslint/eslintrc": "*",
+    "postcss": "*",
+    "tsup": "^8.0.2"
+  }
+}

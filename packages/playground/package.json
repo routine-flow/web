@@ -1,0 +1,34 @@
+{
+  "name": "@routine-flow/playground",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@routine-flow/ui": "workspace:*",
+    "react": "*",
+    "react-dom": "*",
+    "next": "*",
+    "@radix-ui/react-slot": "*",
+    "class-variance-authority": "*",
+    "clsx": "*",
+    "lucide-react": "*",
+    "tailwind-merge": "*",
+    "tailwindcss-animate": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "@types/node": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "postcss": "*",
+    "tailwindcss": "*",
+    "eslint": "*",
+    "eslint-config-next": "*",
+    "@eslint/eslintrc": "*"
+  }
+}
