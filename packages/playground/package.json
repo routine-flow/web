@@ -9,16 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "*",
     "@routine-flow/ui": "workspace:*",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
+    "next": "*",
     "react": "*",
     "react-dom": "*",
-    "next": "*",
-    "@radix-ui/react-slot": "*",
-    "class-variance-authority": "*",
-    "clsx": "*",
-    "lucide-react": "*",
-    "tailwind-merge": "*",
-    "tailwindcss-animate": "*"
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "typescript": "*",
@@ -26,6 +26,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "postcss": "*",
+    "autoprefixer": "*",
     "tailwindcss": "*",
     "eslint": "*",
     "eslint-config-next": "*",
