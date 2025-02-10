@@ -26,6 +26,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "postcss": "*",
+    "autoprefixer": "*",
     "tailwindcss": "*",
     "eslint": "*",
     "eslint-config-next": "*",

@@ -10,10 +10,14 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./index.css": "./dist/index.css"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -33,7 +37,7 @@
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "@radix-ui/react-slot": "*",
+    "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "*",
     "clsx": "*",
     "lucide-react": "*",
@@ -44,6 +48,7 @@
     "eslint-config-next": "*",
     "@eslint/eslintrc": "*",
     "postcss": "*",
+    "autoprefixer": "*",
     "tsup": "^8.0.2"
   }
 }
