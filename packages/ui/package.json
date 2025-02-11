@@ -30,25 +30,25 @@
     "next": "^15.0.0"
   },
   "devDependencies": {
-    "react": "*",
-    "react-dom": "*",
-    "next": "*",
-    "typescript": "*",
+    "@eslint/eslintrc": "*",
+    "@radix-ui/react-slot": "*",
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "@radix-ui/react-slot": "^1.1.2",
+    "autoprefixer": "*",
     "class-variance-authority": "*",
     "clsx": "*",
-    "lucide-react": "*",
-    "tailwindcss": "*",
-    "tailwind-merge": "*",
-    "tailwindcss-animate": "*",
     "eslint": "*",
     "eslint-config-next": "*",
-    "@eslint/eslintrc": "*",
-    "postcss": "*",
-    "autoprefixer": "*",
-    "tsup": "^8.0.2"
+    "lucide-react": "*",
+    "next": "*",
+    "react": "*",
+    "react-dom": "*",
+    "tailwind-merge": "*",
+    "tailwindcss": "*",
+    "tailwindcss-animate": "*",
+    "tsup": "^8.0.2",
+    "typescript": "*",
+    "postcss": "*"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@routine-flow/web",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -10,26 +10,26 @@
   },
   "dependencies": {
     "@routine-flow/ui": "workspace:*",
-    "react": "*",
-    "react-dom": "*",
-    "next": "*",
     "@radix-ui/react-slot": "*",
     "class-variance-authority": "*",
     "clsx": "*",
+    "next": "*",
+    "react": "*",
+    "react-dom": "*",
     "lucide-react": "*",
     "tailwind-merge": "*",
     "tailwindcss-animate": "*"
   },
   "devDependencies": {
-    "typescript": "*",
+    "@eslint/eslintrc": "*",
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "postcss": "*",
     "autoprefixer": "*",
-    "tailwindcss": "*",
     "eslint": "*",
     "eslint-config-next": "*",
-    "@eslint/eslintrc": "*"
+    "typescript": "*",
+    "tailwindcss": "*",
+    "postcss": "*"
   }
 }
