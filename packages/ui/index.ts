@@ -8,6 +8,7 @@ export * from "./src/components/ui/card";
 export * from "./src/components/ui/calendar";
 export * from "./src/components/ui/checkbox";
 export * from "./src/components/ui/dialog";
+export * from "./src/components/ui/drawer";
 export * from "./src/components/ui/input";
 export * from "./src/components/ui/label";
 export * from "./src/components/ui/select";
