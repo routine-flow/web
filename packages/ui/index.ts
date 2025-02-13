@@ -27,6 +27,8 @@ export * from "./src/components/ui/tabs";
 export * from "./src/components/ui/textarea";
 export * from "./src/components/ui/toast";
 export * from "./src/components/ui/toggle";
+export * from "./src/components/ui/toggle-group";
+
 export * from "./src/components/typography/Heading";
 export * from "./src/components/typography/Large";
 export * from "./src/components/typography/Lead";
