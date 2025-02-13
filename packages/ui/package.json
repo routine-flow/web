@@ -30,10 +30,12 @@
     "next": "^15.0.0"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "*",
     "@radix-ui/react-label": "*",
     "@radix-ui/react-select": "*",
+    "@radix-ui/react-slot": "^1.1.2",
+    "date-fns": "^4.1.0",
     "lucide-react": "*",
+    "react-day-picker": "8.10.1",
     "tailwind-merge": "*",
     "tailwindcss-animate": "*"
   },
