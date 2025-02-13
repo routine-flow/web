@@ -1,31 +1,28 @@
+import { H1, H2, H3, H4 } from "@routine-flow/ui/components/typography/Heading";
+import { Large } from "@routine-flow/ui/components/typography/Large";
+import { Lead } from "@routine-flow/ui/components/typography/Lead";
+import { Li, Ol, Ul } from "@routine-flow/ui/components/typography/List";
+import { Muted } from "@routine-flow/ui/components/typography/Muted";
+import { P } from "@routine-flow/ui/components/typography/Paragraph";
+import { Small } from "@routine-flow/ui/components/typography/Small";
+import { Button } from "@routine-flow/ui/components/ui/button";
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-  Input,
-  Label,
+} from "@routine-flow/ui/components/ui/card";
+import { Input } from "@routine-flow/ui/components/ui/input";
+import { Label } from "@routine-flow/ui/components/ui/label";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  H1,
-  H2,
-  H3,
-  H4,
-  Large,
-  Lead,
-  Ul,
-  Ol,
-  Li,
-  Muted,
-  P,
-  Small,
-} from "@routine-flow/ui";
+} from "@routine-flow/ui/components/ui/select";
 
 export default function Home() {
   return (

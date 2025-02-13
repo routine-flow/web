@@ -22,8 +22,8 @@
     "autoprefixer": "*",
     "eslint": "*",
     "eslint-config-next": "*",
+    "postcss": "*",
     "typescript": "*",
-    "tailwindcss": "*",
-    "postcss": "*"
+    "tailwindcss": "*"
   }
 }
