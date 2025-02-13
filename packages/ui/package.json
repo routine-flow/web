@@ -41,7 +41,8 @@
     "lucide-react": "*",
     "react-day-picker": "8.10.1",
     "tailwind-merge": "*",
-    "tailwindcss-animate": "*"
+    "tailwindcss-animate": "*",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "*",
