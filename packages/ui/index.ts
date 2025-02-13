@@ -19,6 +19,8 @@ export * from "./src/components/ui/input";
 export * from "./src/components/ui/label";
 export * from "./src/components/ui/select";
 export * from "./src/components/ui/separator";
+export * from "./src/components/ui/skeleton";
+export * from "./src/components/ui/slider";
 
 export * from "./src/components/typography/Heading";
 export * from "./src/components/typography/Large";
