@@ -7,13 +7,10 @@ interface MobileFrameProps extends PropsWithChildren {
 
 const MobileFrame = ({ className, children }: MobileFrameProps) => {
   return (
-    <body
-      className={cn(
-        "relative my-0 mx-auto w-full max-w-xl min-h-screen",
-        className
-      )}
-    >
-      <main className="w-full h-full">{children}</main>
+    <body className={cn("m-0 max-w-[100svw] min-h-[100svh]", className)}>
+      <main className="relative w-[37.5rem] h-full overflow-x-hidden mx-auto">
+        {children}
+      </main>
     </body>
   );
 };
