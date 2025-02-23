@@ -11,3 +11,18 @@ export const getUserAgent = async () => {
     os: JSON.parse(headersList.get(HEADER_KEYS.UA_OS) || "{}"),
   };
 };
+
+export const osToDeviceVariant = (os: { name: string; version: string }) => {
+  const { name } = os;
+  const osName = name.toLowerCase().replace(" ", "");
+
+  if (osName.includes("ios")) {
+    return "ios";
+  }
+
+  // if (osName.includes("android")) {
+  //   return "android";
+  // }
+
+  return "web";
+};
