@@ -31,7 +31,7 @@ export function InjectProps<P>(
       return React.cloneElement(child, {
         ...childProps,
         children: newChildren,
-        key: globalThis.crypto.randomUUID(),
+        key: globalThis.crypto.getRandomValues(new Uint32Array(1))[0],
       });
     }
 
@@ -40,7 +40,7 @@ export function InjectProps<P>(
       ...childProps,
       ...additionalProps,
       children: newChildren,
-      key: globalThis.crypto.randomUUID(),
+      key: globalThis.crypto.getRandomValues(new Uint32Array(1))[0],
     });
   }
 

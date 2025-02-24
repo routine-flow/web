@@ -53,6 +53,22 @@ export default async function ActionSheetPage() {
           </ActionSheetFooter>
         </ActionSheetContent>
       </ActionSheet>
+
+      <ActionSheet ui={{ device: "android" }}>
+        <ActionSheetTrigger asChild>
+          <Button variant="outline">Open ActionSheet</Button>
+        </ActionSheetTrigger>
+        <ActionSheetContent>
+          <ActionSheetHeader>
+            <ActionSheetTitle>Title</ActionSheetTitle>
+            <ActionSheetItem>Label</ActionSheetItem>
+            <ActionSheetItem>Label</ActionSheetItem>
+          </ActionSheetHeader>
+          <ActionSheetFooter>
+            <ActionSheetClose>Cancel</ActionSheetClose>
+          </ActionSheetFooter>
+        </ActionSheetContent>
+      </ActionSheet>
     </div>
   );
 }

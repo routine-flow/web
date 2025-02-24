@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Drawer as ActionSheetPrimitive } from "vaul";
-
+import { Squircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { UIConfig } from "@/types";
@@ -39,15 +39,19 @@ const ActionSheetTrigger = ActionSheetPrimitive.Trigger;
 
 const ActionSheetPortal = ActionSheetPrimitive.Portal;
 
-const actionSheetCloseVariants = cva("", {
-  variants: {
-    device: {
-      ios: "h-14 bg-background text-foreground rounded-none shadow-slate-400 text-md",
-      android: "",
-      web: "",
+const actionSheetCloseVariants = cva(
+  "text-foreground rounded-none text-md font-normal bg-background",
+  {
+    variants: {
+      device: {
+        ios: "h-14 shadow-slate-400",
+        android:
+          "h-[3.25rem] py-0 px-4 justify-start shadow-lg gap-8  text-slate-600",
+        web: "",
+      },
     },
-  },
-});
+  }
+);
 
 const ActionSheetClose = React.forwardRef<
   React.ElementRef<typeof ActionSheetPrimitive.Close>,
@@ -64,6 +68,9 @@ const ActionSheetClose = React.forwardRef<
         )}
         variant="secondary"
       >
+        {ui.device === "android" && (
+          <X className="w-[0.625rem] h-[0.625rem] text-slate-500" />
+        )}
         {children}
       </Button>
     </ActionSheetPrimitive.Close>
@@ -85,8 +92,10 @@ ActionSheetOverlay.displayName = ActionSheetPrimitive.Overlay.displayName;
 
 const ActionSheetContent = React.forwardRef<
   React.ElementRef<typeof ActionSheetPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof ActionSheetPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof ActionSheetPrimitive.Content> & {
+    ui?: UIConfig;
+  }
+>(({ className, children, ui = { device: "web" }, ...props }, ref) => (
   <ActionSheetPortal>
     <ActionSheetOverlay />
     <ActionSheetPrimitive.Content
@@ -97,17 +106,25 @@ const ActionSheetContent = React.forwardRef<
       )}
       {...props}
     >
-      <div className="mx-auto w-full max-w-sm">{children}</div>
+      <div
+        className={cn(
+          "mx-auto w-full",
+          ui.device === "ios" && "max-w-sm",
+          ui.device === "android" && "max-w-md"
+        )}
+      >
+        {children}
+      </div>
     </ActionSheetPrimitive.Content>
   </ActionSheetPortal>
 ));
 ActionSheetContent.displayName = "ActionSheetContent";
 
-const actionSheetHeaderVariants = cva("", {
+const actionSheetHeaderVariants = cva("grid", {
   variants: {
     device: {
-      ios: "grid rounded-lg overflow-hidden mx-4 text-center sm:text-left ",
-      android: "",
+      ios: "rounded-lg overflow-hidden mx-4 text-center",
+      android: "text-left",
       web: "",
     },
   },
@@ -133,10 +150,10 @@ const ActionSheetHeader = ({
 };
 ActionSheetHeader.displayName = "ActionSheetHeader";
 
-const actionSheetFooterVariants = cva("", {
+const actionSheetFooterVariants = cva("flex flex-col ", {
   variants: {
     device: {
-      ios: "flex flex-col gap-2 mx-4 mb-4 mt-2 rounded-lg overflow-hidden",
+      ios: "gap-2 mx-4 mb-4 mt-2 rounded-lg overflow-hidden",
       android: "",
       web: "",
     },
@@ -162,15 +179,19 @@ const ActionSheetFooter = ({
 };
 ActionSheetFooter.displayName = "ActionSheetFooter";
 
-const actionSheetTitleVariants = cva("", {
-  variants: {
-    device: {
-      ios: "w-full inline-flex items-center justify-center py-2 px-4 text-xs text-muted-foreground leading-4 bg-muted h-14",
-      android: "",
-      web: "",
+const actionSheetTitleVariants = cva(
+  "w-full inline-flex items-center font-normal px-4 ",
+  {
+    variants: {
+      device: {
+        ios: "justify-center py-2 text-xs text-muted-foreground bg-muted h-14",
+        android:
+          "bg-background text-foreground h-[3.25rem] py-0 shadow-lg gap-8 text-slate-600 text-md",
+        web: "",
+      },
     },
-  },
-});
+  }
+);
 
 const ActionSheetTitle = React.forwardRef<
   React.ElementRef<typeof ActionSheetPrimitive.Title>,
@@ -201,25 +222,38 @@ const ActionSheetDescription = React.forwardRef<
 ActionSheetDescription.displayName =
   ActionSheetPrimitive.Description.displayName;
 
-const actionSheetItemVariants = cva("", {
-  variants: {
-    device: {
-      ios: "h-14 bg-muted text-foreground rounded-none shadow-slate-400 text-md",
-      android: "",
-      web: "",
+const actionSheetItemVariants = cva(
+  "text-foreground rounded-none text-md font-normal",
+  {
+    variants: {
+      device: {
+        ios: "h-14 bg-muted text-foreground rounded-none shadow-slate-400",
+        android:
+          "h-[3.25rem] py-0 bg-background justify-start shadow-lg gap-8 text-slate-600",
+        web: "",
+      },
     },
-  },
-});
+  }
+);
 const ActionSheetItem = ({
   ui = { device: "web" },
   className,
+  children,
   ...props
 }: React.HTMLAttributes<HTMLButtonElement> & { ui?: UIConfig }) => (
   <Button
     variant="secondary"
     className={cn(actionSheetItemVariants({ device: ui.device }), className)}
     {...props}
-  />
+  >
+    {ui.device === "android" && (
+      <Squircle
+        className="w-[0.625rem] h-[0.625rem] text-slate-500"
+        fill="#64748b"
+      />
+    )}
+    {children}
+  </Button>
 );
 
 ActionSheetItem.displayName = "ActionSheetItem";
