@@ -7,25 +7,30 @@ import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 import { UIConfig } from "@/types";
 import { Button } from "./button";
+import { InjectProps } from "../lib/inject-props";
 
 type ActionSheetProps = React.ComponentProps<
   typeof ActionSheetPrimitive.Root
 > & {
+  ui?: UIConfig;
   shouldScaleBackground?: boolean;
 };
 
 const ActionSheet = ({
+  ui = { device: "web" },
   shouldScaleBackground = true,
   children,
   ...props
 }: React.PropsWithChildren<ActionSheetProps>) => {
+  const InjectedActionSheet = InjectProps(ActionSheetPrimitive.Root, { ui });
+
   return (
-    <ActionSheetPrimitive.Root
+    <InjectedActionSheet
       shouldScaleBackground={shouldScaleBackground}
       {...props}
     >
       {children}
-    </ActionSheetPrimitive.Root>
+    </InjectedActionSheet>
   );
 };
 ActionSheet.displayName = "ActionSheet";
@@ -47,15 +52,21 @@ const actionSheetCloseVariants = cva("", {
 const ActionSheetClose = React.forwardRef<
   React.ElementRef<typeof ActionSheetPrimitive.Close>,
   React.ComponentPropsWithoutRef<typeof ActionSheetPrimitive.Close> & {
-    ui: UIConfig;
+    ui?: UIConfig;
   }
->(({ className, ui = { device: "web" }, ...props }, ref) => {
+>(({ className, children, ui = { device: "web" }, ...props }, ref) => {
   return (
-    <ActionSheetPrimitive.Close
-      ref={ref}
-      className={cn(actionSheetCloseVariants({ device: ui.device }), className)}
-      {...props}
-    />
+    <ActionSheetPrimitive.Close asChild ref={ref} {...props}>
+      <Button
+        className={cn(
+          actionSheetCloseVariants({ device: ui.device }),
+          className
+        )}
+        variant="secondary"
+      >
+        {children}
+      </Button>
+    </ActionSheetPrimitive.Close>
   );
 });
 ActionSheetClose.displayName = ActionSheetPrimitive.Close.displayName;
@@ -105,8 +116,9 @@ const actionSheetHeaderVariants = cva("", {
 const ActionSheetHeader = ({
   ui = { device: "web" },
   className,
+  children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ui: UIConfig }) => {
+}: React.HTMLAttributes<HTMLDivElement> & { ui?: UIConfig }) => {
   return (
     <div
       className={cn(
@@ -114,7 +126,9 @@ const ActionSheetHeader = ({
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 };
 ActionSheetHeader.displayName = "ActionSheetHeader";
@@ -131,13 +145,21 @@ const actionSheetFooterVariants = cva("", {
 const ActionSheetFooter = ({
   ui = { device: "web" },
   className,
+  children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ui: UIConfig }) => (
-  <div
-    className={cn(actionSheetFooterVariants({ device: ui.device }), className)}
-    {...props}
-  />
-);
+}: React.HTMLAttributes<HTMLDivElement> & { ui?: UIConfig }) => {
+  return (
+    <div
+      className={cn(
+        actionSheetFooterVariants({ device: ui.device }),
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
 ActionSheetFooter.displayName = "ActionSheetFooter";
 
 const actionSheetTitleVariants = cva("", {
@@ -153,7 +175,7 @@ const actionSheetTitleVariants = cva("", {
 const ActionSheetTitle = React.forwardRef<
   React.ElementRef<typeof ActionSheetPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof ActionSheetPrimitive.Title> & {
-    ui: UIConfig;
+    ui?: UIConfig;
   }
 >(({ className, ui = { device: "web" }, ...props }, ref) => {
   return (
@@ -192,7 +214,7 @@ const ActionSheetItem = ({
   ui = { device: "web" },
   className,
   ...props
-}: React.HTMLAttributes<HTMLButtonElement> & { ui: UIConfig }) => (
+}: React.HTMLAttributes<HTMLButtonElement> & { ui?: UIConfig }) => (
   <Button
     variant="secondary"
     className={cn(actionSheetItemVariants({ device: ui.device }), className)}

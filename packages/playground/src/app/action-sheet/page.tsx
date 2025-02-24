@@ -38,18 +38,18 @@ export default async function ActionSheetPage() {
         </ActionSheetContent>
       </ActionSheet>
 
-      <ActionSheet>
+      <ActionSheet ui={{ device: "ios" }}>
         <ActionSheetTrigger asChild>
           <Button variant="outline">Open ActionSheet</Button>
         </ActionSheetTrigger>
         <ActionSheetContent>
-          <ActionSheetHeader ui={{ device: "ios" }}>
-            <ActionSheetTitle ui={{ device: "ios" }}>Title</ActionSheetTitle>
-            <ActionSheetItem ui={{ device: "ios" }}>Label</ActionSheetItem>
-            <ActionSheetItem ui={{ device: "ios" }}>Label</ActionSheetItem>
+          <ActionSheetHeader>
+            <ActionSheetTitle>Title</ActionSheetTitle>
+            <ActionSheetItem>Label</ActionSheetItem>
+            <ActionSheetItem>Label</ActionSheetItem>
           </ActionSheetHeader>
-          <ActionSheetFooter ui={{ device: "ios" }}>
-            <ActionSheetClose ui={{ device: "ios" }}>Cancel</ActionSheetClose>
+          <ActionSheetFooter>
+            <ActionSheetClose>Cancel</ActionSheetClose>
           </ActionSheetFooter>
         </ActionSheetContent>
       </ActionSheet>
