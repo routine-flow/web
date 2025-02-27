@@ -5,7 +5,7 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { cva } from "class-variance-authority";
+import { cva, VariantProps } from "class-variance-authority";
 import { UIConfig } from "@/types";
 import { InjectProps } from "../lib/inject-props";
 
@@ -79,7 +79,7 @@ AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 const alertDialogHeaderVariants = cva("flex flex-col space-y-2 text-center", {
   variants: {
     device: {
-      ios: "px-2 gap-2",
+      ios: "px-2 gap-2 py-4",
       android: "",
       web: "sm:text-left",
     },
@@ -102,12 +102,17 @@ const AlertDialogHeader = ({
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
-const alertDialogFooterVariants = cva("flex flex-col", {
+const alertDialogFooterVariants = cva("flex", {
   variants: {
+    variant: {
+      horizontal:
+        "justify-center [&>button]:border-r [&>button]:border-r-slate-200 last:[&>button]:border-r-0",
+      vertical: "flex-col",
+    },
     device: {
       ios: "",
       android: "",
-      web: "sm:flex-row sm:justify-end sm:space-x-2 gap-2",
+      web: "",
     },
   },
 });
@@ -115,10 +120,17 @@ const alertDialogFooterVariants = cva("flex flex-col", {
 const AlertDialogFooter = ({
   className,
   ui = { device: "web" },
+  variant = "vertical",
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ui?: UIConfig }) => (
+}: React.HTMLAttributes<HTMLDivElement> & {
+  ui?: UIConfig;
+  variant?: VariantProps<typeof alertDialogFooterVariants>["variant"];
+}) => (
   <div
-    className={cn(alertDialogFooterVariants({ device: ui.device }), className)}
+    className={cn(
+      alertDialogFooterVariants({ device: ui.device, variant }),
+      className
+    )}
     {...props}
   />
 );
@@ -127,7 +139,7 @@ AlertDialogFooter.displayName = "AlertDialogFooter";
 const alertDialogTitleVariants = cva("", {
   variants: {
     device: {
-      ios: "text-[17px] font-medium pt-4",
+      ios: "text-[17px] font-medium",
       android: "",
       web: "text-lg font-semibold",
     },
@@ -151,7 +163,7 @@ AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName;
 const alertDialogDescriptionVariants = cva("text-sm", {
   variants: {
     device: {
-      ios: "text-foreground !mt-0 pb-4",
+      ios: "text-foreground !mt-0",
       android: "",
       web: "text-muted-foreground",
     },
@@ -179,7 +191,7 @@ AlertDialogDescription.displayName =
 const alertDialogActionVariants = cva("", {
   variants: {
     device: {
-      ios: "text-primary border-t border-slate-200 h-11 font-medium",
+      ios: "text-primary border-t border-slate-200 rounded-none h-11 w-full font-medium",
       android: "",
       web: "",
     },
@@ -207,7 +219,7 @@ AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 const alertDialogCancelVariants = cva("", {
   variants: {
     device: {
-      ios: "text-primary border-t border-slate-200 h-11 font-normal",
+      ios: "text-primary border-t border-slate-200 rounded-none h-11 w-full font-normal",
       android: "",
       web: "mt-2 sm:mt-0",
     },
