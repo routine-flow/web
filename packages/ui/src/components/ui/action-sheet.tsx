@@ -8,6 +8,7 @@ import { cva } from "class-variance-authority";
 import { UIConfig } from "@/types";
 import { Button } from "./button";
 import { InjectProps } from "../lib/inject-props";
+import type { VariantProps } from "class-variance-authority";
 
 type ActionSheetProps = React.ComponentProps<
   typeof ActionSheetPrimitive.Root
@@ -44,7 +45,7 @@ const actionSheetCloseVariants = cva(
   {
     variants: {
       device: {
-        ios: "h-14 shadow-slate-400",
+        ios: "h-14 shadow-slate-400 text-primary text-xl",
         android:
           "h-[3.25rem] py-0 px-4 justify-start shadow-lg gap-8  text-slate-600",
         web: "",
@@ -150,7 +151,7 @@ const ActionSheetHeader = ({
 };
 ActionSheetHeader.displayName = "ActionSheetHeader";
 
-const actionSheetFooterVariants = cva("flex flex-col ", {
+const actionSheetFooterVariants = cva("flex flex-col", {
   variants: {
     device: {
       ios: "gap-2 mx-4 mb-4 mt-2 rounded-lg overflow-hidden",
@@ -159,6 +160,7 @@ const actionSheetFooterVariants = cva("flex flex-col ", {
     },
   },
 });
+
 const ActionSheetFooter = ({
   ui = { device: "web" },
   className,
@@ -227,23 +229,34 @@ const actionSheetItemVariants = cva(
   {
     variants: {
       device: {
-        ios: "h-14 bg-muted text-foreground rounded-none shadow-slate-400",
+        ios: "h-14 bg-muted text-primary text-xl rounded-none shadow-slate-400",
         android:
           "h-[3.25rem] py-0 bg-background justify-start shadow-lg gap-8 text-slate-600",
         web: "",
       },
+      variant: {
+        destructive: "text-destructive",
+      },
     },
   }
 );
+
 const ActionSheetItem = ({
   ui = { device: "web" },
   className,
   children,
+  variant,
   ...props
-}: React.HTMLAttributes<HTMLButtonElement> & { ui?: UIConfig }) => (
+}: React.HTMLAttributes<HTMLButtonElement> & {
+  ui?: UIConfig;
+  variant?: VariantProps<typeof actionSheetItemVariants>["variant"];
+}) => (
   <Button
     variant="secondary"
-    className={cn(actionSheetItemVariants({ device: ui.device }), className)}
+    className={cn(
+      actionSheetItemVariants({ device: ui.device, variant }),
+      className
+    )}
     {...props}
   >
     {ui.device === "android" && (

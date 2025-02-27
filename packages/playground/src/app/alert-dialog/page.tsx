@@ -12,7 +12,7 @@ import {
   AlertDialogAction,
 } from "@routine-flow/ui/components/ui/alert-dialog";
 import { Button } from "@routine-flow/ui/components/ui/button";
-import { getUserAgent } from "@/utils/userAgent";
+import { getUserAgent, osToDeviceVariant } from "@/utils/userAgent";
 
 const AlertDialogPage = async () => {
   const ua = await getUserAgent();
@@ -38,6 +38,44 @@ const AlertDialogPage = async () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <AlertDialog ui={{ device: "ios" }}>
+        <AlertDialogTrigger asChild>
+          <Button variant="outline">IOS Alert Dialog</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="outline">Android Alert Dialog</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog> */}
     </div>
   );
 };
