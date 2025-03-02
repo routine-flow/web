@@ -32,7 +32,7 @@ const AlertDialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/30 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -47,7 +47,8 @@ const alertDialogContentVariants = cva(
     variants: {
       device: {
         ios: "w-[95%] bg-muted rounded-lg",
-        android: "",
+        android:
+          "w-full gap-6 border bg-background p-6 pt-5 pb-4 sm:rounded-lg",
         web: "w-full gap-4 border bg-background p-6 sm:rounded-lg",
       },
     },
@@ -80,7 +81,7 @@ const alertDialogHeaderVariants = cva("flex flex-col space-y-2 text-center", {
   variants: {
     device: {
       ios: "px-2 gap-2 py-4",
-      android: "",
+      android: "text-left gap-5",
       web: "sm:text-left",
     },
   },
@@ -105,16 +106,28 @@ AlertDialogHeader.displayName = "AlertDialogHeader";
 const alertDialogFooterVariants = cva("flex", {
   variants: {
     variant: {
-      horizontal:
-        "justify-center [&>button]:border-r [&>button]:border-r-slate-200 last:[&>button]:border-r-0",
-      vertical: "flex-col",
+      horizontal: "",
+      vertical: "",
     },
     device: {
       ios: "",
-      android: "",
-      web: "",
+      android: "gap-2 flex-col flex-row justify-end",
+      web: "gap-2 flex-col sm:flex-row sm:justify-end",
     },
   },
+  compoundVariants: [
+    {
+      variant: "horizontal",
+      device: "ios",
+      className:
+        "[&>button]:border-r [&>button]:border-r-slate-200 last:[&>button]:border-r-0",
+    },
+    {
+      variant: "vertical",
+      device: "ios",
+      className: "flex-col",
+    },
+  ],
 });
 
 const AlertDialogFooter = ({
@@ -139,8 +152,8 @@ AlertDialogFooter.displayName = "AlertDialogFooter";
 const alertDialogTitleVariants = cva("", {
   variants: {
     device: {
-      ios: "text-[17px] font-medium",
-      android: "",
+      ios: "text-[1.0625rem] font-medium",
+      android: "text-[1.25rem] font-medium",
       web: "text-lg font-semibold",
     },
   },
@@ -164,7 +177,7 @@ const alertDialogDescriptionVariants = cva("text-sm", {
   variants: {
     device: {
       ios: "text-foreground !mt-0",
-      android: "",
+      android: "text-foreground leading-5 !mt-0",
       web: "text-muted-foreground",
     },
   },
@@ -192,7 +205,7 @@ const alertDialogActionVariants = cva("", {
   variants: {
     device: {
       ios: "text-primary border-t border-slate-200 rounded-none h-11 w-full font-medium",
-      android: "",
+      android: "text-primary font-medium px-3",
       web: "",
     },
   },
@@ -207,7 +220,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      buttonVariants({ variant: ui.device === "ios" ? "ghost" : "default" }),
+      buttonVariants({ variant: ui.device === "web" ? "default" : "ghost" }),
       alertDialogActionVariants({ device: ui.device }),
       className
     )}
@@ -220,8 +233,8 @@ const alertDialogCancelVariants = cva("", {
   variants: {
     device: {
       ios: "text-primary border-t border-slate-200 rounded-none h-11 w-full font-normal",
-      android: "",
-      web: "mt-2 sm:mt-0",
+      android: "text-primary font-normal px-3",
+      web: "",
     },
   },
 });
@@ -235,7 +248,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      buttonVariants({ variant: ui.device === "ios" ? "ghost" : "outline" }),
+      buttonVariants({ variant: ui.device === "web" ? "outline" : "ghost" }),
       alertDialogCancelVariants({ device: ui.device }),
       "",
       className

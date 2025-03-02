@@ -20,7 +20,7 @@ const AlertDialogPage = async () => {
   return (
     <div>
       <pre>User Agent Info: {JSON.stringify(ua, null, 2)}</pre>
-      <AlertDialog>
+      <AlertDialog ui={{ device: osToDeviceVariant(ua.os) }}>
         <AlertDialogTrigger asChild>
           <Button variant="outline">Web Alert Dialog</Button>
         </AlertDialogTrigger>
@@ -59,7 +59,7 @@ const AlertDialogPage = async () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* <AlertDialog>
+      <AlertDialog ui={{ device: "android" }}>
         <AlertDialogTrigger asChild>
           <Button variant="outline">Android Alert Dialog</Button>
         </AlertDialogTrigger>
@@ -76,7 +76,7 @@ const AlertDialogPage = async () => {
             <AlertDialogAction>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog> */}
+      </AlertDialog>
     </div>
   );
 };
