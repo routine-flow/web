@@ -47,8 +47,7 @@ const alertDialogContentVariants = cva(
     variants: {
       device: {
         ios: "w-[95%] bg-muted rounded-lg",
-        android:
-          "w-full gap-6 border bg-background p-6 pt-5 pb-4 sm:rounded-lg",
+        android: "w-full gap-6 border bg-background p-6 pt-5 pb-4 rounded-2xl",
         web: "w-full gap-4 border bg-background p-6 sm:rounded-lg",
       },
     },
