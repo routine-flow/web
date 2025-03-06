@@ -6,6 +6,11 @@ import {
   useRef,
   useCallback,
 } from "react";
+import { Label } from "@routine-flow/ui/components/ui/label";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@routine-flow/ui/components/ui/radio-group";
 
 export const Chat = ({ children }: PropsWithChildren) => {
   const lines = children
@@ -162,7 +167,7 @@ export const Chat = ({ children }: PropsWithChildren) => {
               onClick={handleSkip}
               className="text-xs px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
             >
-              ≫
+              ▶▶
             </button>
           </>
         )}
@@ -175,6 +180,21 @@ export const ChatSending = () => {
   return (
     <div className="w-2/3 flex bg-gray-200 rounded-xl p-4">
       <span className="animate-pulse duration-1000">...</span>
+    </div>
+  );
+};
+
+export const ChatSection = ({ children }: PropsWithChildren) => {
+  return <RadioGroup className="gap-3">{children}</RadioGroup>;
+};
+
+export const ChatSectionItem = (
+  props: PropsWithChildren<{ value: string; id: string }>
+) => {
+  return (
+    <div className="flex items-center space-x-2">
+      <RadioGroupItem value={props.value} id={props.id} />
+      <Label htmlFor={props.id}>{props.children}</Label>
     </div>
   );
 };
