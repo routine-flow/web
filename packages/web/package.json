@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@routine-flow/ui": "workspace:*",
+    "framer-motion": "^12.5.0",
     "next": "*",
     "react": "*",
     "react-dom": "*"

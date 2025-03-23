@@ -4,197 +4,245 @@ import {
   useState,
   useEffect,
   useRef,
+  useMemo,
   useCallback,
 } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Label } from "@routine-flow/ui/components/ui/label";
 import {
   RadioGroup,
   RadioGroupItem,
 } from "@routine-flow/ui/components/ui/radio-group";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@routine-flow/ui/components/ui/avatar";
+import { cn } from "@routine-flow/ui/lib/utils";
+import { Input } from "@routine-flow/ui/components/ui/input";
 
-export const Chat = ({ children }: PropsWithChildren) => {
-  const lines = children
-    ?.toString()
-    .split("\n")
-    .map((line) => line.trim());
+interface ChatProps {
+  children: React.ReactNode;
+  onChatComplete?: () => void;
+}
 
-  const texts =
-    lines?.map((line, index) => {
-      return `${index ? "\n" : ""}${line}`;
-    }) || null;
-
-  // 텍스트를 문자 단위로 분리 (단어 단위가 아닌 문자 단위로 변경)
-  const allCharacters = texts ? texts.join("").split("") : [];
-
-  // 현재까지 표시된 문자의 인덱스를 추적하는 상태
-  const [displayedCharCount, setDisplayedCharCount] = useState(0);
-  // 애니메이션이 완료되었는지 여부
-  const [isComplete, setIsComplete] = useState(false);
-  // 현재까지 표시된 텍스트
+export const Chat = ({ children, onChatComplete }: ChatProps) => {
   const [visibleText, setVisibleText] = useState("");
-  // 애니메이션 일시 정지 여부
-  const [isPaused, setIsPaused] = useState(true); // 초기값을 true로 설정 (처음에는 일시정지 상태)
-  // 초기 대기 시간이 끝났는지 여부
-  const [isInitialDelayComplete, setIsInitialDelayComplete] = useState(false);
-  // 페이지가 현재 보이는 상태인지 여부
-  const [isPageVisible, setIsPageVisible] = useState(false);
-  // 대기 시간 카운트다운 시작 여부
-  const [hasStartedCountdown, setHasStartedCountdown] = useState(false);
-  // 마지막 타이핑 시간 추적
-  const lastTypingTime = useRef(Date.now());
-  // 3초 타이머 참조
-  const initialDelayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const animationTimeout = useRef<NodeJS.Timeout | null>(null);
+  const indexRef = useRef(0);
+  const lastTypingTimeRef = useRef(Date.now());
+  const hasCompletedRef = useRef(false);
 
-  // 페이지 가시성 변화 감지
-  useEffect(() => {
-    // 초기 가시성 상태 설정
-    setIsPageVisible(document.visibilityState === "visible");
+  const allCharacters = useMemo(() => {
+    const lines = children
+      ?.toString()
+      .split("\n")
+      .map((line) => line.trim());
+    const texts =
+      lines?.map((line, index) => `${index ? "\n" : ""}${line}`) || [];
+    return texts.join("").split("");
+  }, [children]);
 
-    // 가시성 변화 이벤트 핸들러
-    const handleVisibilityChange = () => {
-      const isVisible = document.visibilityState === "visible";
-      setIsPageVisible(isVisible);
-
-      // 페이지가 숨겨지면 타이머 초기화
-      if (!isVisible && initialDelayTimerRef.current) {
-        clearTimeout(initialDelayTimerRef.current);
-        initialDelayTimerRef.current = null;
-      }
-    };
-
-    // 이벤트 리스너 등록
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    // 클린업 함수
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      if (initialDelayTimerRef.current) {
-        clearTimeout(initialDelayTimerRef.current);
-      }
-    };
-  }, []);
-
-  // 페이지가 보이고 있을 때 3초 카운트다운 시작
-  useEffect(() => {
-    // 페이지가 보이고 있고, 아직 카운트다운을 시작하지 않았으며, 대기 시간이 끝나지 않았을 때
-    if (isPageVisible && !hasStartedCountdown && !isInitialDelayComplete) {
-      setHasStartedCountdown(true);
-
-      initialDelayTimerRef.current = setTimeout(() => {
-        setIsInitialDelayComplete(true);
-        setIsPaused(false); // 1.5초 후에 애니메이션 시작
-      }, 1500); // 1500ms = 1.5초
-    }
-  }, [isPageVisible, hasStartedCountdown, isInitialDelayComplete]);
-
-  // 다음 타이핑 지연 시간 계산 함수
-  const getNextDelay = useCallback((currentChar: string) => {
-    // 기본 타이핑 속도 (밀리초)
+  const getNextDelay = (char: string) => {
     const baseSpeed = 30;
-
-    // 공백 후에는 살짝 기다림
-    if (currentChar === " ") {
+    if (char === " ") {
       return baseSpeed + Math.random() * 40;
-    }
-
-    // 줄바꿈 후에는 조금 더 기다림
-    if (currentChar === "\n") {
+    } else if (char === "\n") {
       return baseSpeed + Math.random() * 150 + 150;
+    } else {
+      return baseSpeed + Math.random() * 20;
     }
+  };
 
-    // 일반 문자는 약간의 랜덤성을 가진 기본 속도
-    return baseSpeed + Math.random() * 20;
-  }, []);
+  const completeAnimation = useCallback(() => {
+    if (!hasCompletedRef.current && onChatComplete) {
+      hasCompletedRef.current = true;
+      onChatComplete();
+    }
+  }, [onChatComplete]);
 
-  useEffect(() => {
-    if (isPaused || isComplete) return;
+  const runAnimation = useCallback(() => {
+    if (isComplete) return;
 
-    // 모든 문자가 표시되었다면 애니메이션 중단
-    if (displayedCharCount >= allCharacters.length) {
+    if (indexRef.current >= allCharacters.length) {
       setIsComplete(true);
+      completeAnimation();
       return;
     }
 
-    const currentChar = allCharacters[displayedCharCount];
-    const delay = getNextDelay(currentChar);
+    if (document.visibilityState !== "visible") {
+      return;
+    }
 
-    // 현재 시간과 마지막 타이핑 시간의 차이 계산
+    const currentChar = allCharacters[indexRef.current];
     const now = Date.now();
-    const timeSinceLastType = now - lastTypingTime.current;
+    const timeSinceLastType = now - lastTypingTimeRef.current;
+    const delay = Math.max(0, getNextDelay(currentChar) - timeSinceLastType);
 
-    // 지연 시간 조정 (너무 느리게 타이핑되지 않도록)
-    const adjustedDelay = Math.max(0, delay - timeSinceLastType);
-
-    const timer = setTimeout(() => {
-      lastTypingTime.current = Date.now();
-
+    animationTimeout.current = setTimeout(() => {
+      lastTypingTimeRef.current = Date.now();
       setVisibleText((prev) => prev + currentChar);
-      setDisplayedCharCount((prev) => prev + 1);
-    }, adjustedDelay);
+      indexRef.current += 1;
+      runAnimation();
+    }, delay);
+  }, [allCharacters, isComplete, completeAnimation]);
 
-    return () => clearTimeout(timer);
-  }, [displayedCharCount, allCharacters, isComplete, isPaused, getNextDelay]);
+  useEffect(() => {
+    if (isInitialized) {
+      return;
+    }
 
-  // 사용자 인터랙션을 처리하는 함수들
-  const handlePauseToggle = () => {
-    setIsPaused((prev) => !prev);
-  };
+    setIsInitialized(true);
 
-  const handleSkip = () => {
-    setVisibleText(allCharacters.join(""));
-    setDisplayedCharCount(allCharacters.length);
-    setIsComplete(true);
-  };
+    const startTimerId = setTimeout(() => {
+      if (!isComplete) {
+        runAnimation();
+      }
+    }, 1500);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        if (animationTimeout.current) {
+          clearTimeout(animationTimeout.current);
+          animationTimeout.current = null;
+        }
+      } else if (document.visibilityState === "visible") {
+        if (!isComplete) {
+          runAnimation();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      clearTimeout(startTimerId);
+      if (animationTimeout.current) {
+        clearTimeout(animationTimeout.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (children !== allCharacters.join("") && isInitialized) {
+      indexRef.current = 0;
+      setVisibleText("");
+      setIsComplete(false);
+      hasCompletedRef.current = false;
+      setIsInitialized(false);
+
+      if (animationTimeout.current) {
+        clearTimeout(animationTimeout.current);
+        animationTimeout.current = null;
+      }
+    }
+  }, [allCharacters, isInitialized, children]);
 
   return (
-    <div className="w-2/3 relative">
-      <pre className="w-full rounded-lg bg-gray-50 p-4 font-mono text-sm">
-        {visibleText}
-        {!isComplete && <span className="animate-pulse">|</span>}
-      </pre>
-
-      {/* 컨트롤 버튼 (선택적으로 표시) */}
-      <div className="absolute top-2 right-2 flex gap-2 opacity-50 hover:opacity-100 transition-opacity">
-        {!isComplete && isInitialDelayComplete && (
-          <>
-            <button
-              onClick={handlePauseToggle}
-              className="text-xs px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            >
-              {isPaused ? "▶" : "❚❚"}
-            </button>
-            <button
-              onClick={handleSkip}
-              className="text-xs px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            >
-              ▶▶
-            </button>
-          </>
-        )}
+    <div className="flex gap-4">
+      <Avatar className="my-2">
+        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        <AvatarFallback>RF</AvatarFallback>
+      </Avatar>
+      <div className="w-2/3 relative">
+        <pre className="w-full rounded-lg bg-gray-50 p-4 font-mono text-sm whitespace-pre-wrap">
+          {visibleText}
+          {!isComplete && <span className="animate-pulse">|</span>}
+        </pre>
       </div>
     </div>
   );
 };
 
-export const ChatSending = () => {
+export const ChatSending = ({ children }: PropsWithChildren) => {
   return (
-    <div className="w-2/3 flex bg-gray-200 rounded-xl p-4">
-      <span className="animate-pulse duration-1000">...</span>
-    </div>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-2/3 flex bg-gray-200 rounded-xl p-4"
+      >
+        <span className={cn("duration-1000", !children && "animate-pulse")}>
+          {children || "..."}
+        </span>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+interface ChatInputProps
+  extends PropsWithChildren,
+    React.ComponentProps<"input"> {}
+
+export const ChatInput = (props: ChatInputProps) => {
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-2/3 flex bg-gray-200 rounded-xl p-4"
+      >
+        <Input {...props} />
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
 export const ChatSection = ({ children }: PropsWithChildren) => {
-  return <RadioGroup className="gap-3">{children}</RadioGroup>;
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0 },
+        show: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.3,
+          },
+        },
+      }}
+      initial="hidden"
+      animate="show"
+    >
+      <RadioGroup className="gap-3">{children}</RadioGroup>
+    </motion.div>
+  );
 };
 
-export const ChatSectionItem = (
-  props: PropsWithChildren<{ value: string; id: string }>
-) => {
+interface ChatSectionItemProps extends PropsWithChildren {
+  value: string;
+  id: string;
+  onSelected?: (value: string) => void;
+}
+
+export const ChatSectionItem = (props: ChatSectionItemProps) => {
   return (
-    <div className="flex items-center space-x-2">
-      <RadioGroupItem value={props.value} id={props.id} />
+    <motion.div
+      className="flex items-center space-x-2"
+      variants={{
+        hidden: { opacity: 0, x: -20 },
+        show: {
+          opacity: 1,
+          x: 0,
+          transition: {
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+          },
+        },
+      }}
+    >
+      <RadioGroupItem
+        value={props.value}
+        id={props.id}
+        onClick={() => props.onSelected?.(props.children as string)}
+      />
       <Label htmlFor={props.id}>{props.children}</Label>
-    </div>
+    </motion.div>
   );
 };
