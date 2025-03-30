@@ -246,3 +246,35 @@ export const ChatSectionItem = (props: ChatSectionItemProps) => {
     </motion.div>
   );
 };
+
+export interface ChatSelectProps extends PropsWithChildren {
+  value: string;
+  options: {
+    id: string;
+    value: string;
+    label: string;
+    onSelected: (value: string) => void;
+  }[];
+}
+
+export const ChatSelect = ({ value, options }: ChatSelectProps) => {
+  return (
+    <div className="flex flex-col gap-4 items-end">
+      <ChatSending>{value}</ChatSending>
+      <div className="w-2/3 flex pl-3">
+        <ChatSection>
+          {options.map((option) => (
+            <ChatSectionItem
+              key={option.id}
+              value={option.value}
+              id={option.id}
+              onSelected={option.onSelected}
+            >
+              {option.label}
+            </ChatSectionItem>
+          ))}
+        </ChatSection>
+      </div>
+    </div>
+  );
+};
