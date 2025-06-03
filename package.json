@@ -14,6 +14,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@sqlite.org/sqlite-wasm": "^3.49.1-build4",
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

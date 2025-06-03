@@ -7,7 +7,7 @@ import {
   ChatSection,
   ChatSectionItem,
   ChatSending,
-} from "@/components/shared/chat/components";
+} from "@/components/onboarding/chat/components";
 import { Button } from "@routine-flow/ui/components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
@@ -223,7 +223,7 @@ const Onboarding = () => {
         )}
       {step >= 12 && isExitSession && (
         <Button asChild>
-          <Link href="/">홈으로 이동하기</Link>
+          <Link href="/daily">메인 홈으로 이동하기</Link>
         </Button>
       )}
       {step >= 4 &&
